@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "zoe-async-excercise"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "zoe_async_excercise"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+grpcio = "^1.54.0"
+grpcio-tools = "^1.54.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

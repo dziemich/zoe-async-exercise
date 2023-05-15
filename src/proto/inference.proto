@@ -1,0 +1,17 @@
+// inference.proto
+syntax = "proto3";
+
+
+// The request message containing the images.
+message InferenceRequest {
+  bytes image = 1;
+}
+
+// The response message containing prediction
+message InferenceResponse {
+  string prediction = 1;
+}
+
+service InferenceService {
+  rpc infer (InferenceRequest) returns (InferenceResponse) {}
+}
