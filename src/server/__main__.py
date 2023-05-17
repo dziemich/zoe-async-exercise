@@ -1,5 +1,6 @@
 import logging
 from concurrent import futures
+from typing import Iterator
 
 import grpc
 
@@ -19,6 +20,14 @@ class InferenceServer(InferenceServiceServicer):
         prediction = run_inference(request.image)
         logger.info(f"Responding with prediction: {prediction}")
         return InferenceResponse(prediction=prediction)
+
+    def infer_stream(self, request_iterator: Iterator[InferenceRequest], _context) -> Iterator[InferenceResponse]:
+        for request in request_iterator:
+            logger.info("Received stream inference request")
+            prediction = run_inference(request.image)
+            logger.info(f"Responding stream with prediction: {prediction}")
+            yield InferenceResponse(prediction=prediction)
+
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))

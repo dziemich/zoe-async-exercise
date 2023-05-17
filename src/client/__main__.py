@@ -1,4 +1,6 @@
 import logging
+import time
+from typing import Iterator
 
 import grpc
 import logging
@@ -25,5 +27,22 @@ def run_client_version0():
     )
 
 
+def run_client_version1():
+    def iterator():
+        for i in range(6):
+            logger.info("Requesting streamed inference")
+            yield InferenceRequest(image=image_bytes)
+            time.sleep(1)
+
+    logger.info("Requesting inference")
+    response_iterator: Iterator[InferenceResponse] = stub.infer_stream(
+        iterator()
+    )
+    for response in response_iterator:
+        logger.info(
+            f"Inference successful! Prediction is: {response.prediction}"
+        )
+
+
 if __name__ == "__main__":
-    run_client_version0()
+    run_client_version1()
